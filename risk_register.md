@@ -1,0 +1,116 @@
+# JTS Risk Register (V1.1 Baseline, 33 Risks)
+
+Date: 2026-03-23  
+Method: FMEA with Inherent and Residual scoring  
+Scoring reference: `risk_scoring_rubric.md`  
+KRI reference: `risk_kri_catalog.md`
+
+Legend:
+
+- Priority: Critical (`Residual RPN >= 60` or `Residual S = 5`), High (`40-59`), Medium (`20-39`), Low (`<20`)
+- Release Gate Impact: `Block`, `Conditional`, `Monitor`
+- Evidence Classes: D=Design, I=Implementation, T=Test, R=Runtime, S=Security, Rc=Recovery, G=Governance
+
+## 1) Core Register
+
+| ID | Category | Failure Mode | Inherent S/O/D/RPN | Residual S/O/D/RPN | Priority | Release Gate Impact | Owner Role | Status | Evidence |
+|---|---|---|---|---|---|---|---|---|---|
+| JTS-R-001 | Application Workflow Integrity | Review-gate behavior is ambiguous in with-review E2E outcomes | 5/4/4=80 | 5/3/3=45 | Critical | Block | Application Engineering Lead + QA Lead | Open | `packages/scripts/end-to-end-tests/IMPLEMENTATION.md:146`, `packages/scripts/end-to-end-tests/IMPLEMENTATION.md:154` |
+| JTS-R-002 | Application Workflow Integrity | Lock lifecycle remains race-prone with timeout/no auto-renew behavior | 4/4/4=64 | 4/3/3=36 | Medium | Conditional | Application Engineering Lead | Open | `complexity_analysis_exec_summary.md:38`, `docs/ui/HIL_Lock_Feature.md:12`, `docs/ui/HIL_Lock_Feature.md:13` |
+| JTS-R-003 | CI/CD and Test Assurance | PR gating does not consistently include high-value E2E paths | 5/4/4=80 | 5/3/3=45 | Critical | Block | QA Lead + Platform/DevOps Lead | Open | `complexity_analysis_exec_summary.md:40`, `.github/workflows/main.yml:114`, `.github/workflows/main.yml:116` |
+| JTS-R-004 | Governance and Compliance Controls | QA document claims stronger gate coverage than enforced in pipeline paths | 4/4/4=64 | 4/3/3=36 | Medium | Conditional | QA Lead | Open | `docs/software-qa.md:12`, `docs/software-qa.md:193`, `.github/workflows/main.yml:116` |
+| JTS-R-005 | Documentation and Operational Readiness | Control docs are incomplete/placeholder-heavy in release-significant areas | 4/3/5=60 | 3/3/4=36 | Medium | Conditional | Program/Delivery Authority | Open | `docs/design/system-design-doc.md:1`, `docs/software-qa.md:44`, `docs/data-quality-management.md:88` |
+| JTS-R-006 | Data Pipeline and Quality | OCR/NLP threshold and quality controls are incomplete for some ontologies/sections | 5/3/4=60 | 5/3/3=45 | Critical | Block | Data Governance Lead + QA Lead | Open | `docs/data-quality-management.md:83`, `docs/data-quality-management.md:88`, `docs/data-quality-management.md:92` |
+| JTS-R-007 | Infrastructure and Deployment | HIL deploy readiness shows environment/secret/reachability instability | 4/3/4=48 | 3/3/3=27 | Medium | Conditional | Platform/DevOps Lead | Open | `.github/workflows/main.yml:154`, `packages/scripts/end-to-end-tests/docs/multi-form-phase2-2026-02-24.md:354`, `packages/scripts/end-to-end-tests/docs/multi-form-phase2-2026-02-24.md:380` |
+| JTS-R-008 | Observability and Incident Readiness | Observability controls are asserted but not evidenced by complete operational control documentation | 5/3/4=60 | 5/3/4=60 | Critical | Block | Platform/DevOps Lead + Operations Lead | Open | `docs/software-qa.md:11`, `docs/software-qa.md:231` |
+| JTS-R-009 | Recovery and Rollback | Restore/failover proof is incomplete for critical stores and workflows | 5/3/5=75 | 5/3/4=60 | Critical | Block | Operations/Release Authority | Open | `docs/design/system-design-doc.md:316`, `docs/design/system-design-doc.md:326`, `docs/ops-platform-guide.md:319` |
+| JTS-R-010 | Security and Access Control | Static-analysis/security backlog creates unresolved release-significant debt | 4/4/4=64 | 4/3/3=36 | Medium | Conditional | Cloud Security Architect + Engineering Lead | Open | `issues.json:2`, `issues.json:15`, `issues.json:239` |
+| JTS-R-011 | Application Workflow Integrity | Internal test-only approval path can diverge from production approval semantics | 4/4/4=64 | 4/4/3=48 | High | Conditional | Application Engineering Lead + QA Lead | Open | `packages/scripts/end-to-end-tests/IMPLEMENTATION.md:146` |
+| JTS-R-012 | CI/CD and Test Assurance | Full multi-form Dev AWS E2E execution remains a known gap | 4/4/4=64 | 3/4/3=36 | Medium | Conditional | QA Lead | Open | `packages/scripts/end-to-end-tests/IMPLEMENTATION.md:360` |
+| JTS-R-013 | Application Workflow Integrity | With-review re-entry behavior remains unresolved in known gap list | 4/3/4=48 | 4/3/3=36 | Medium | Conditional | Application Engineering Lead | Open | `packages/scripts/end-to-end-tests/IMPLEMENTATION.md:370` |
+| JTS-R-014 | Governance and Compliance Controls | Update lifecycle automation remains incomplete by documented admission | 3/3/4=36 | 3/3/3=27 | Medium | Monitor | Program/Delivery Authority | Open | `docs/ops-platform-guide.md:337` |
+| JTS-R-015 | Governance and Compliance Controls | Software update/change-management sections are TODO/incomplete | 4/3/4=48 | 3/3/4=36 | Medium | Conditional | Program/Delivery Authority | Open | `docs/ops-platform-guide.md:319`, `docs/ops-platform-guide.md:341` |
+| JTS-R-016 | Infrastructure and Deployment | Offline deployment relies on manual DCOPs transfer scheduling | 3/4/4=48 | 3/4/3=36 | Medium | Conditional | Operations Lead | Open | `docs/ops-platform-guide.md:144`, `docs/ops-platform-guide.md:284` |
+| JTS-R-017 | Documentation and Operational Readiness | Transfer command example quality issues can cause runbook execution errors | 2/3/4=24 | 2/3/4=24 | Medium | Monitor | Operations Lead | Open | `docs/ops-platform-guide.md:146` |
+| JTS-R-018 | Infrastructure and Deployment | Deployment path relies on privileged alias/manual sequence with variable operator execution | 3/3/4=36 | 3/3/4=36 | Medium | Conditional | Operations/Release Authority | Open | `docs/ops-platform-guide.md:214`, `docs/ops-platform-guide.md:242` |
+| JTS-R-019 | Governance and Compliance Controls | PR template does not enforce risk/security/rollback evidence | 4/4/4=64 | 4/4/3=48 | High | Conditional | QA Lead + Security Lead | Open | `.github/PULL_REQUEST_TEMPLATE.md:18`, `.github/PULL_REQUEST_TEMPLATE.md:21`, `.github/PULL_REQUEST_TEMPLATE.md:34` |
+| JTS-R-020 | Infrastructure and Deployment | Terraform backend approach differs across environments, increasing state-control inconsistency risk | 4/3/4=48 | 4/3/3=36 | Medium | Conditional | Platform/DevOps Lead | Open | `packages/jts-deploy/dev-providers.nix:4`, `packages/jts-deploy/pp-providers.nix:4` |
+| JTS-R-021 | Security and Access Control | IAM/action scope appears broadly permissive in architecture-defined role policy examples | 5/3/4=60 | 5/3/3=45 | Critical | Block | Cloud Security Architect | Open | `docs/design/system-design-doc.md:396`, `docs/design/system-design-doc.md:397`, `docs/design/system-design-doc.md:398` |
+| JTS-R-022 | Security and Access Control | Network security control documentation is incomplete | 4/3/5=60 | 4/3/4=48 | High | Conditional | Cloud Security Architect + Ops Lead | Open | `docs/design/system-design-doc.md:424`, `docs/design/system-design-doc.md:426` |
+| JTS-R-023 | Recovery and Rollback | Failover/recovery sections are placeholders across core stores | 5/3/5=75 | 5/3/4=60 | Critical | Block | Operations/Release Authority | Open | `docs/design/system-design-doc.md:316`, `docs/design/system-design-doc.md:342`, `docs/design/system-design-doc.md:359` |
+| JTS-R-024 | Security and Access Control | Dev host config includes fallback secrets for auth values | 5/3/4=60 | 5/3/3=45 | Critical | Block | Cloud Security Architect + Platform Lead | Open | `modules/systems/hil-web-service-host-dev/default.nix:65`, `modules/systems/hil-web-service-host-dev/default.nix:67` |
+| JTS-R-025 | Infrastructure and Deployment | Container image tags use mutable `latest` references in host config | 4/3/4=48 | 4/3/3=36 | Medium | Conditional | Platform/DevOps Lead | Open | `modules/systems/hil-web-service-host-dev/default.nix:258`, `modules/systems/hil-web-service-host-dev/default.nix:336` |
+| JTS-R-026 | Security and Access Control | Default Keycloak bootstrap/admin and DB passwords exist in service config defaults | 5/3/4=60 | 5/3/3=45 | Critical | Block | Cloud Security Architect + Platform Lead | Open | `modules/systems/hil-web-service-host-dev/default.nix:293`, `modules/systems/hil-web-service-host-dev/default.nix:297` |
+| JTS-R-027 | Security and Access Control | Infrastructure contains public/external exposure and destructive DB/S3 lifecycle defaults | 5/3/4=60 | 5/3/3=45 | Critical | Block | Cloud Security Architect + Infrastructure Lead | Open | `packages/jts-deploy/infrastructure/dependencies/main.tf:943`, `packages/jts-deploy/infrastructure/dependencies/main.tf:1001`, `packages/jts-deploy/infrastructure/dependencies/main.tf:1002`, `packages/jts-deploy/infrastructure/dependencies/main.tf:1207` |
+| JTS-R-028 | Security and Access Control | Static SSH authorized keys are embedded in instance user data | 5/3/4=60 | 5/3/3=45 | Critical | Block | Cloud Security Architect + Infrastructure Lead | Open | `packages/jts-deploy/infrastructure/dependencies/main.tf:1112`, `packages/jts-deploy/infrastructure/dependencies/main.tf:1115` |
+| JTS-R-029 | Data Pipeline and Quality | DVC workflow relies on manual push discipline; missing push breaks branch reproducibility | 3/3/4=36 | 3/3/3=27 | Medium | Conditional | Data Governance Lead + DevOps Lead | Open | `docs/DVC-README.md:8`, `docs/DVC-README.md:170`, `docs/DVC-README.md:177` |
+| JTS-R-030 | Application Workflow Integrity | High complexity/churn hotspots in core workflows increase regression probability | 4/4/4=64 | 4/4/3=48 | High | Conditional | Application Engineering Lead | Open | `complexity_analysis_exec_summary.md:30`, `complexity_analysis_exec_summary.md:40`, `complexity_analysis.md:65` |
+| JTS-R-031 | Forecasting and Estimation Governance | Optimism bias and strategic misrepresentation drive underestimated effort/risk and overstated delivery confidence | 5/4/5=100 | 5/4/4=80 | Critical | Block | Program/Delivery Authority + Risk Coordinator | Open | `risk_register_plan.md:48`, `risk_register_plan.md:300`, `risk_scoring_rubric.md:115` |
+| JTS-R-032 | Forecasting and Estimation Governance | Average-based reporting masks fat-tail black swan overruns in schedule/cost exposure | 5/3/5=75 | 5/3/4=60 | Critical | Block | Program/Delivery Authority + Cross-functional Risk Board | Open | `risk_register_plan.md:270`, `risk_register_plan.md:300`, `risk_scoring_rubric.md:129` |
+| JTS-R-033 | Forecasting and Estimation Governance | Release planning relies on inside-view assumptions without reference class forecasting calibration | 4/4/5=80 | 4/4/4=64 | Critical | Block | Risk Coordinator + Program/Delivery Authority | Open | `risk_register_plan.md:48`, `risk_register_plan.md:304`, `risk_scoring_rubric.md:119` |
+
+## 2) Treatment and Governance Fields
+
+| ID | Control Effectiveness (1-5) | KRI | Trigger Threshold | Mitigation Plan (Next Action) | Contingency Plan | Evidence Classes | Evidence Confidence | Evidence Date | Target Date | Accepted By | Acceptance Expiry |
+|---|---:|---|---|---|---|---|---|---|---|---|---|
+| JTS-R-001 | 2 | KRI-001 | Any release run in `passed_expected_review_hold` without approved exception | Define deterministic release assertion for with-review path | Freeze prod release pending risk-board decision | D,I,T | Medium | 2026-03-23 | 2026-04-05 | TBD | TBD |
+| JTS-R-002 | 2 | KRI-002 | Lock conflict rate >2% weekly | Add lock-renew design and race-condition tests | Restrict concurrent editors for high-priority forms | D,I,T,R | Medium | 2026-03-23 | 2026-04-15 | TBD | TBD |
+| JTS-R-003 | 2 | KRI-003 | PR E2E coverage <100% for release-scoped workflows | Add mandatory hotspot E2E smoke gate on PR path | Block merge/release to protected branch | D,I,T,R | High | 2026-03-23 | 2026-04-01 | TBD | TBD |
+| JTS-R-004 | 2 | KRI-004 | Any release-significant doc/pipeline mismatch | Reconcile QA claims to enforced controls and evidence paths | Document temporary compensating controls and approval | D,I,G | Medium | 2026-03-23 | 2026-04-08 | TBD | TBD |
+| JTS-R-005 | 2 | KRI-005 | Any critical control section remains placeholder at release checkpoint | Complete critical docs and link to runtime/test proof | Require explicit short-lived exception at risk board | D,G | High | 2026-03-23 | 2026-04-12 | TBD | TBD |
+| JTS-R-006 | 2 | KRI-006 | Undefined thresholds or benchmark drift breach | Define acceptance thresholds and automate drift detection | Route impacted forms to mandatory human review | D,I,T,R | Medium | 2026-03-23 | 2026-04-20 | TBD | TBD |
+| JTS-R-007 | 3 | KRI-007 | HIL deploy success <99% in release runs | Stabilize secret/reachability policy and CI deploy path | Controlled manual HIL deploy with checklist evidence | I,T,R,G | Medium | 2026-03-23 | 2026-04-10 | TBD | TBD |
+| JTS-R-008 | 1 | KRI-008 | Critical workflow alarm/runbook coverage <100% | Build alarm/control matrix with operational validation | Release freeze and temporary manual monitoring | D,R,G | Low | 2026-03-23 | 2026-04-18 | TBD | TBD |
+| JTS-R-009 | 1 | KRI-009 | Missing or failed restore drill within SLA | Execute restore/rollback drills and publish evidence | Block cutover until successful drill + rollback proof | D,Rc,G | Low | 2026-03-23 | 2026-04-25 | TBD | TBD |
+| JTS-R-010 | 2 | KRI-010 | Any open critical vuln without acceptance | Enforce release-blocking vulnerability policy | Formal exception with compensating controls + expiry | S,G | Medium | 2026-03-23 | 2026-04-07 | TBD | TBD |
+| JTS-R-011 | 2 | KRI-011 | Test-only approval path used as release-signoff evidence | Separate dev-diagnostic and release-signoff paths | Require manual sign-off using production-equivalent path | I,T,G | Medium | 2026-03-23 | 2026-04-09 | TBD | TBD |
+| JTS-R-012 | 2 | KRI-012 | Multi-form E2E coverage incomplete at release checkpoint | Implement and require all-form release validation plan | Restrict release to forms with validated end-to-end evidence | I,T,R | Medium | 2026-03-23 | 2026-05-01 | TBD | TBD |
+| JTS-R-013 | 2 | KRI-013 | Any with-review re-entry unresolved in release candidate | Resolve re-entry behavior and assertion contract | Treat as release blocker for affected form path | I,T,R | Medium | 2026-03-23 | 2026-04-05 | TBD | TBD |
+| JTS-R-014 | 2 | KRI-014 | Automation maturity KPI below agreed minimum | Define automation roadmap milestones with owners | Use manual sign-off gate until roadmap milestone met | D,G | Medium | 2026-03-23 | 2026-04-30 | TBD | TBD |
+| JTS-R-015 | 2 | KRI-015 | Any TODO section in release-significant governance docs | Complete update/change-management sections and controls | Add temporary governance checklist gate | D,G | Medium | 2026-03-23 | 2026-04-15 | TBD | TBD |
+| JTS-R-016 | 2 | KRI-016 | DCOP transfer latency exceeds release SLA | Define handoff SLA, backup approvers, and escalation tree | Delay release and re-baseline cutover schedule | D,R,G | Medium | 2026-03-23 | 2026-04-20 | TBD | TBD |
+| JTS-R-017 | 3 | KRI-017 | Runbook command quality defects in release path docs | Add runbook lint/review checklist and command validation | Require operator dry-run checklist before execution | D,G | Medium | 2026-03-23 | 2026-04-12 | TBD | TBD |
+| JTS-R-018 | 2 | KRI-018 | Privileged manual step variance detected in release rehearsal | Convert manual steps to controlled scripts with validation | Require dual-control operator execution and sign-off | D,I,R,G | Medium | 2026-03-23 | 2026-05-05 | TBD | TBD |
+| JTS-R-019 | 2 | KRI-019 | PRs missing risk/security/rollback evidence >0 for release scope | Add mandatory PR fields for risk, security, rollback, evidence links | Block merge until template fields complete | D,G | Medium | 2026-03-23 | 2026-04-03 | TBD | TBD |
+| JTS-R-020 | 2 | KRI-020 | State backend policy mismatch across environments | Standardize backend policy and locking controls | Hold promotion until state policy mismatch resolved | I,G | Medium | 2026-03-23 | 2026-04-22 | TBD | TBD |
+| JTS-R-021 | 2 | KRI-021 | Wildcard IAM scope count above policy threshold | Tighten policies to least privilege and review exceptions | Time-bound compensating control with access review cadence | D,I,S | Medium | 2026-03-23 | 2026-04-14 | TBD | TBD |
+| JTS-R-022 | 2 | KRI-022 | Network control docs incomplete at release review | Populate network security matrix with enforceable controls | Security waiver with short expiry and focused monitoring | D,S,G | Medium | 2026-03-23 | 2026-04-18 | TBD | TBD |
+| JTS-R-023 | 1 | KRI-023 | Failover/recovery sections incomplete for critical stores | Define and validate failover/recovery procedures by store | Block production cutover until recovery evidence exists | D,Rc,G | Low | 2026-03-23 | 2026-04-30 | TBD | TBD |
+| JTS-R-024 | 2 | KRI-024 | Any fallback secret present in active release configuration | Remove fallback secrets and require managed secret source only | Halt release and rotate impacted credentials | I,S,G | Medium | 2026-03-23 | 2026-04-06 | TBD | TBD |
+| JTS-R-025 | 2 | KRI-025 | Mutable image tag usage detected in release configuration | Pin image tags/digests in deploy paths | Freeze deploy rollout pending digest pinning | I,S | Medium | 2026-03-23 | 2026-04-17 | TBD | TBD |
+| JTS-R-026 | 2 | KRI-026 | Default admin/password values present in runtime configuration | Remove defaults and enforce secret injection precondition | Rotate credentials and block release until verified | I,S | Medium | 2026-03-23 | 2026-04-06 | TBD | TBD |
+| JTS-R-027 | 2 | KRI-027 | Public exposure/destructive lifecycle defaults detected | Harden SG/DB/S3 settings and add policy checks | Pause release and apply compensating access controls | I,S,Rc | Medium | 2026-03-23 | 2026-04-16 | TBD | TBD |
+| JTS-R-028 | 2 | KRI-028 | Static embedded SSH keys remain in infrastructure code | Move to managed key distribution and rotate keys | Revoke exposed keys and audit host access | I,S,G | Medium | 2026-03-23 | 2026-04-10 | TBD | TBD |
+| JTS-R-029 | 3 | KRI-029 | DVC/Nix reproducibility check fails for branch/release candidate | Enforce CI check for example-forms build and DVC object availability | Block merge/release for data pointer changes | D,I,T,G | Medium | 2026-03-23 | 2026-04-24 | TBD | TBD |
+| JTS-R-030 | 2 | KRI-030 | Hotspot complexity trend worsens across release cycles | Execute hotspot decomposition plan with changed-file gates | Restrict risky change windows and add dual-path validation | D,I,T,R | Medium | 2026-03-23 | 2026-05-15 | TBD | TBD |
+| JTS-R-031 | 1 | KRI-031 | Forecast bias index >15% for 2 cycles or >30% in one cycle | Require independent estimate challenge and explicit bias-adjusted uplift before gate review | Apply contingency reserve and re-baseline commitments before go/no-go | D,R,G | Low | 2026-03-23 | 2026-04-22 | TBD | TBD |
+| JTS-R-032 | 1 | KRI-032 | Tail overrun incidence exceeds threshold or any >100% overrun without approved contingency | Add tail-distribution reporting and stress-test release plan at P95 assumptions | Freeze release decision and trigger black-swan contingency review | D,R,G | Low | 2026-03-23 | 2026-04-22 | TBD | TBD |
+| JTS-R-033 | 1 | KRI-033 | Reference class forecast coverage <100% for release-significant estimates | Build and enforce reference class library with documented comparator quality | No-go until outside-view forecast packet is complete and approved | D,R,G | Low | 2026-03-23 | 2026-04-20 | TBD | TBD |
+
+## 3) Crown-Jewel Failure Chains (Scenario View)
+
+| Scenario ID | Failure Chain | Linked Risk IDs | Required Controls | Current Gate Position |
+|---|---|---|---|---|
+| SC-01 | Ingest trigger failure -> incomplete processing -> false release confidence | JTS-R-003, JTS-R-012, JTS-R-016, JTS-R-029 | PR E2E gate, release-path multi-form validation, transfer SLA | Conditional/Block |
+| SC-02 | Review-gate ambiguity/deadlock -> unresolved workflow state -> non-deterministic sign-off | JTS-R-001, JTS-R-011, JTS-R-013 | Deterministic with-review assertions, production-equivalent approval validation | Block |
+| SC-03 | Partial state transition or control drift -> inconsistent form state and approvals | JTS-R-002, JTS-R-021, JTS-R-030 | Lock transition tests, policy hardening, contract + canary checks | Conditional |
+| SC-04 | Stale lock and timeout path -> user contention/edit interruption | JTS-R-002, JTS-R-030 | Lock-renew design, lock conflict monitoring, UI/session safeguards | Conditional |
+| SC-05 | OCR/NLP drift -> data integrity degradation -> downstream trust impact | JTS-R-006, JTS-R-030, JTS-R-003 | Threshold governance, drift checks, benchmarked release validation | Block |
+| SC-06 | Bad release with weak rollback/restore proof -> prolonged outage/compliance risk | JTS-R-008, JTS-R-009, JTS-R-015, JTS-R-023 | Alarm coverage matrix, restore drills, complete change controls | Block |
+| SC-07 | Biased planning assumptions -> under-scoped controls -> fat-tail overrun -> pressured release decision | JTS-R-031, JTS-R-032, JTS-R-033 | Independent challenge, reference-class forecasting, P80/P95 contingency gates | Block |
+
+## 4) Baseline Summary
+
+- Total risks: 33
+- Critical: 14 (`JTS-R-001`, `JTS-R-003`, `JTS-R-006`, `JTS-R-008`, `JTS-R-009`, `JTS-R-021`, `JTS-R-023`, `JTS-R-024`, `JTS-R-026`, `JTS-R-027`, `JTS-R-028`, `JTS-R-031`, `JTS-R-032`, `JTS-R-033`)
+- High: 4
+- Medium: 15
+- Low: 0
+- Current release blockers (`Block`): `JTS-R-001`, `JTS-R-003`, `JTS-R-006`, `JTS-R-008`, `JTS-R-009`, `JTS-R-021`, `JTS-R-023`, `JTS-R-024`, `JTS-R-026`, `JTS-R-027`, `JTS-R-028`, `JTS-R-031`, `JTS-R-032`, `JTS-R-033`
+
+Next required governance action:
+
+1. Run cross-functional calibration workshop for score validation.
+2. Populate `Accepted By` and `Acceptance Expiry` for any unresolved blocker accepted for release.
+3. Collect runtime/security/recovery evidence classes for all `Block` risks before production decision.
+4. Complete reference-class forecast packet with `P50`/`P80`/`P95` ranges for all release-significant estimates.
