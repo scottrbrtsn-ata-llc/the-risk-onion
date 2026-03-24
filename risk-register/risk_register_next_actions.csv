@@ -1,0 +1,6 @@
+"Step","Action"
+"1","Run cross-functional calibration workshop for score validation."
+"2","Populate Accepted By and Acceptance Expiry for any unresolved blocker accepted for release."
+"3","Collect runtime/security/recovery evidence classes for all Block risks before production decision."
+"4","Complete reference-class forecast packet with P50/P80/P95 ranges for all release-significant estimates."
+"5","Execute LocalStack-bypass, sensitive-logging, and payload-budget control hardening for JTS-R-040..JTS-R-044 before release decision."
