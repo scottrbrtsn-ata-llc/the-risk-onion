@@ -1,73 +1,116 @@
 # The Risk Onion
 
-The Risk Onion is named for the layers of the architect elevator, from the C-suite in the penthouse down to the boiler room.
+The Risk Onion is a documentation-first risk governance baseline for software delivery and release readiness. 🧅
 
-Risk exists at every level in a software project. It lives in an open system where people, technology, delivery process, organizational structure, business sector, and customer reality collide to form a complex ecosystem of value.
+The core idea is simple: risk is layered across architecture, implementation, operations, and planning. This repo makes those layers explicit, measurable, and reviewable before release decisions are made.
 
-The Risk Onion is a layered approach to exposing that risk. If you peel it honestly, it will likely cause tears. Better ours now than our customers' later.
+## What this repository does
 
-## What This Repository Is
+This repository combines:
 
-This repository is a documentation-first risk governance baseline for software delivery and release readiness.
-
-It combines:
-
-- FMEA-style scoring (inherent and residual)
-- Hard release gates and explicit acceptance authority
+- FMEA-style risk scoring (inherent and residual)
+- Hard release gates with explicit acceptance authority
 - Evidence confidence and freshness rules
 - KRI (Key Risk Indicator) monitoring
 - Forecast governance controls (reference class, percentile ranges, and tail-risk checks)
+- Architecture/QA review artifacts that feed into risk treatment planning
 
-## Repository Contents
+## Baseline snapshot (as of 2026-03-24) 📌
 
-| File | Purpose |
-|---|---|
-| `risk_register_plan.md` | Governance operating model, release gate policy, ownership model, and execution phases |
-| `risk_scoring_rubric.md` | Scoring definitions for Severity/Occurrence/Detection, priority tiers, and acceptance rules |
-| `risk_register.md` | Primary human-readable risk register baseline |
-| `risk_register_v0.csv` | Machine-readable export of the baseline register |
-| `risk_kri_catalog.md` | KRI formulas, thresholds, cadence, ownership, and linked risks |
-| `risk_review_log.md` | Decision log, acceptance register, and review cadence checklist |
-| `complexity_analysis_exec_summary.md` | Executive summary of complexity and churn risk |
-| `complexity_analysis.md` | Full complexity/churn hotspot analysis and reduction plan |
-| `bottleneck_risk_calculator.md` | Delivery bottleneck model for capacity, review pressure, and merge risk |
-| `scc.txt` | Repository language/complexity snapshot |
-| `churn.txt` | Historical file-touch data used in churn analysis |
+From `risk-register/risk_register.md` and `risk-register/risk_register_baseline_summary.csv`:
 
-## Read Order
-
-Recommended sequence for new readers:
-
-1. `risk_register_plan.md`
-2. `risk_scoring_rubric.md`
-3. `risk_register.md`
-4. `risk_kri_catalog.md`
-5. `risk_review_log.md`
-6. `complexity_analysis_exec_summary.md`
-7. `complexity_analysis.md`
-
-## Baseline Snapshot (2026-03-23)
-
-From `risk_register.md`:
-
-- Total risks: 33
-- Critical: 14
-- High: 4
-- Medium: 15
+- Total risks: 44
+- Critical: 19
+- High: 13
+- Medium: 12
 - Low: 0
-- Current release blockers (`Block`): 14
+- Current release blockers (`Block`): 19
 
-This baseline is intentionally strict: unresolved critical and high-consequence risks are treated as release-significant.
+This baseline is intentionally strict: unresolved critical and high-consequence risks remain release-significant until mitigated or formally accepted with expiry-bounded controls.
 
-## Core Governance Principles
+## Governance flow
+
+```mermaid
+flowchart LR
+    A[Collect evidence\nD I T R S Rc G] --> B[Score risks\nInherent + Residual FMEA]
+    B --> C[Classify priority\nCritical High Medium Low]
+    C --> D[Assign gate\nBlock Conditional Monitor]
+    D --> E[Record decision\n`risk-register/risk_review_log.md`]
+    E --> F[Mitigate and re-score]
+    F --> B
+    D --> G{Release decision}
+    G -->|No-go| F
+    G -->|Go with accepted residual risk| H[Formal acceptance\nOwner controls expiry]
+```
+
+## Repository map
+
+```mermaid
+graph TD
+    A[the-risk-onion] --> B[risk-register/]
+    A --> C[arch_review/]
+    A --> D[README.md]
+
+    B --> B1[risk_register_plan.md]
+    B --> B2[risk_scoring_rubric.md]
+    B --> B3[risk_register.md + risk_register.csv]
+    B --> B4[risk_kri_catalog.md]
+    B --> B5[risk_review_log.md]
+    B --> B6[complexity and bottleneck analyses]
+    B --> B7[summary scenario next-action CSV exports]
+
+    C --> C1[arch_qa_plan.md]
+    C --> C2[findings.md + findings-2.md]
+    C --> C3[initial-log-aggregation-plan.md]
+```
+
+## Contents by path
+
+| Path | Purpose |
+|---|---|
+| `risk-register/risk_register_plan.md` | Governance operating model, hard gate policy, ownership model, and execution phases |
+| `risk-register/risk_scoring_rubric.md` | Severity/Occurrence/Detection scoring definitions, priority tiers, and acceptance rules |
+| `risk-register/risk_register.md` | Primary human-readable risk register baseline (current: 44 risks) |
+| `risk-register/risk_register.csv` | Machine-readable export of the full risk register |
+| `risk-register/risk_kri_catalog.md` | KRI formulas, thresholds, cadence, ownership, and linked risks |
+| `risk-register/risk_review_log.md` | Decision log, formal acceptance register, and cadence checklist |
+| `risk-register/risk_register_baseline_summary.csv` | Snapshot metrics for current baseline |
+| `risk-register/risk_register_scenarios.csv` | Crown-jewel failure-chain scenario view |
+| `risk-register/risk_register_next_actions.csv` | Prioritized next governance actions |
+| `risk-register/complexity_analysis_exec_summary.md` | Executive summary of complexity/churn risk and hotspots |
+| `risk-register/complexity_analysis.md` | Full complexity/churn analysis, phased reduction plan, and regression strategy |
+| `risk-register/bottleneck_risk_calculator.md` | Throughput and bottleneck risk model (capacity, PR load, overlap, review pressure) |
+| `risk-register/scc.txt` | Language/complexity snapshot used in complexity analysis |
+| `risk-register/churn.txt` | Historical file-touch data used in churn analysis |
+| `risk-register/issues.json` | Static-analysis issue export used for governance context |
+| `arch_review/arch_qa_plan.md` | 30/60/90 architecture + QA plan with test and risk matrix |
+| `arch_review/findings.md` | Repository architecture and operational concern notes |
+| `arch_review/findings-2.md` | Step Functions workflow findings and serverless risk observations |
+| `arch_review/initial-log-aggregation-plan.md` | Phased observability/log-aggregation strategy for Step Functions + Lambda |
+
+## Recommended reading order
+
+1. `risk-register/risk_register_plan.md`
+2. `risk-register/risk_scoring_rubric.md`
+3. `risk-register/risk_register.md`
+4. `risk-register/risk_kri_catalog.md`
+5. `risk-register/risk_review_log.md`
+6. `risk-register/complexity_analysis_exec_summary.md`
+7. `risk-register/complexity_analysis.md`
+8. `risk-register/bottleneck_risk_calculator.md`
+9. `arch_review/arch_qa_plan.md`
+10. `arch_review/findings-2.md`
+11. `arch_review/initial-log-aggregation-plan.md`
+
+## Core governance principles
 
 - No unowned mission-critical risk
-- No expired, undocumented acceptance
-- No closure of Critical/High risk with document-only evidence
-- No release-significant estimate without outside-view/reference-class evidence
-- No average-only forecast reporting when tail risk can threaten release outcomes
+- No expired or undocumented acceptance
+- No closure of `Critical`/`High` risk with document-only evidence
+- No release-significant estimate without outside-view/reference-class support
+- No average-only forecast reporting when tail risk can threaten outcomes
 
-## Operating Cadence
+## Operating cadence
 
 ### Pre-release hardening mode
 
@@ -78,26 +121,32 @@ This baseline is intentionally strict: unresolved critical and high-consequence 
 
 ### BAU mode
 
-- Weekly: Critical and High risks
-- Biweekly: Medium risks
+- Weekly: `Critical` and `High` risks
+- Biweekly: `Medium` risks
 - Monthly: full reprioritization and trend review
 - Quarterly: rubric and control-effectiveness calibration
 
-## How To Maintain This Repository
+## Maintenance workflow
 
-1. Add or revise risks in `risk_register.md` (and `risk_register_v0.csv` when needed).
-2. Re-score using `risk_scoring_rubric.md`.
-3. Update thresholds/owners in `risk_kri_catalog.md` when controls change.
-4. Record all score, gate, and acceptance decisions in `risk_review_log.md`.
-5. Re-run release hard-gate checks before go/no-go decisions.
+1. Update risk statements in `risk-register/risk_register.md` and `risk-register/risk_register.csv`.
+2. Re-score risks using `risk-register/risk_scoring_rubric.md`.
+3. Update KRIs and thresholds in `risk-register/risk_kri_catalog.md` when controls change.
+4. Record score/gate/acceptance decisions in `risk-register/risk_review_log.md`.
+5. Refresh scenario and summary exports in:
+   - `risk-register/risk_register_baseline_summary.csv`
+   - `risk-register/risk_register_scenarios.csv`
+   - `risk-register/risk_register_next_actions.csv`
 
-## Audience
+## Who this is for
 
 - Delivery leadership and risk boards
-- Engineering, QA, Security, and Operations leads
+- Engineering, QA, Security, Operations, and Data Governance leads
 - Program governance stakeholders
 - Teams accountable for release readiness decisions
 
-## License
+## Notes
 
-See `LICENSE`.
+- This repository currently does not include a `LICENSE` file.
+- Dates in key artifacts are current through 2026-03-24 (`risk-register/risk_register.md`, `risk-register/risk_kri_catalog.md`).
+
+If you are new here, start with the plan and rubric, then move straight to the live register and KRI catalog. You will get to decision-grade context fastest that way. ✅
