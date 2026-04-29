@@ -15,6 +15,18 @@ This repository combines:
 - Forecast governance controls (reference class, percentile ranges, and tail-risk checks)
 - Architecture/QA review artifacts that feed into risk treatment planning
 
+## Methodology (FSSD)
+
+This repository is guided by Feedback-Stabilized Software Development (FSSD), which treats software delivery as a delayed feedback-control system rather than a linear process.
+
+- Model delivery as interacting loops: learning, error, planning, and perception
+- Minimize feedback latency across development, testing, and deployment
+- Separate objective evidence from perception noise to improve decisions
+- Avoid late-stage structural shifts (team scaling spikes and major architecture pivots)
+- Use bounded, delay-aware interventions to reduce overshoot and schedule oscillation
+
+Read the full methodology: [`risk-reduction-methodology/README.md`](risk-reduction-methodology/README.md)
+
 ## Baseline snapshot (as of 2026-03-24) 📌
 
 From `risk-register/risk_register.md` and `risk-register/risk_register_baseline_summary.csv`:
@@ -50,6 +62,7 @@ graph TD
     A[the-risk-onion] --> B[risk-register/]
     A --> C[arch_review/]
     A --> D[README.md]
+    A --> E[risk-reduction-methodology/]
 
     B --> B1[risk_register_plan.md]
     B --> B2[risk_scoring_rubric.md]
@@ -62,6 +75,8 @@ graph TD
     C --> C1[arch_qa_plan.md]
     C --> C2[findings.md + findings-2.md]
     C --> C3[initial-log-aggregation-plan.md]
+
+    E --> E1[README.md FSSD methodology]
 ```
 
 ## Contents by path
@@ -83,6 +98,7 @@ graph TD
 | `risk-register/scc.txt` | Language/complexity snapshot used in complexity analysis |
 | `risk-register/churn.txt` | Historical file-touch data used in churn analysis |
 | `risk-register/issues.json` | Static-analysis issue export used for governance context |
+| `risk-reduction-methodology/README.md` | Feedback-Stabilized Software Development (FSSD) control-loop methodology |
 | `arch_review/arch_qa_plan.md` | 30/60/90 architecture + QA plan with test and risk matrix |
 | `arch_review/findings.md` | Repository architecture and operational concern notes |
 | `arch_review/findings-2.md` | Step Functions workflow findings and serverless risk observations |
@@ -90,17 +106,18 @@ graph TD
 
 ## Recommended reading order
 
-1. `risk-register/risk_register_plan.md`
-2. `risk-register/risk_scoring_rubric.md`
-3. `risk-register/risk_register.md`
-4. `risk-register/risk_kri_catalog.md`
-5. `risk-register/risk_review_log.md`
-6. `risk-register/complexity_analysis_exec_summary.md`
-7. `risk-register/complexity_analysis.md`
-8. `risk-register/bottleneck_risk_calculator.md`
-9. `arch_review/arch_qa_plan.md`
-10. `arch_review/findings-2.md`
-11. `arch_review/initial-log-aggregation-plan.md`
+1. `risk-reduction-methodology/README.md`
+2. `risk-register/risk_register_plan.md`
+3. `risk-register/risk_scoring_rubric.md`
+4. `risk-register/risk_register.md`
+5. `risk-register/risk_kri_catalog.md`
+6. `risk-register/risk_review_log.md`
+7. `risk-register/complexity_analysis_exec_summary.md`
+8. `risk-register/complexity_analysis.md`
+9. `risk-register/bottleneck_risk_calculator.md`
+10. `arch_review/arch_qa_plan.md`
+11. `arch_review/findings-2.md`
+12. `arch_review/initial-log-aggregation-plan.md`
 
 ## Core governance principles
 
@@ -149,4 +166,4 @@ graph TD
 - This repository currently does not include a `LICENSE` file.
 - Dates in key artifacts are current through 2026-03-24 (`risk-register/risk_register.md`, `risk-register/risk_kri_catalog.md`).
 
-If you are new here, start with the plan and rubric, then move straight to the live register and KRI catalog. You will get to decision-grade context fastest that way. ✅
+If you are new here, start with the methodology, then the plan and rubric, and then move to the live register and KRI catalog. You will get to decision-grade context fastest that way. ✅
