@@ -485,18 +485,8 @@ Where you begin matters enormously:
 
 A compact way to think about it:
 
-$$
-\text{Outcome} = F(
-\underbrace{\text{Problem}}*{\text{attractor}},
-\underbrace{\text{Resources}}*{\text{constraints}},
-\underbrace{\text{Capabilities}}*{\text{internal dynamics}},
-\underbrace{\text{Topology}}*{\text{coupling}},
-\underbrace{\text{Process}}*{\text{feedback}},
-\underbrace{\text{External Forces}}*{\text{inputs}},
-\underbrace{\text{Culture}}*{\text{response function}},
-\underbrace{\text{Initial Tech State}}*{\text{starting point}}
-)
-$$
+![](./formula.png)
+
 ---
 
 # The nonlinear insight (the part most people miss)
